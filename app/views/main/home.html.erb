@@ -1,0 +1,61 @@
+<h1>Demo Rails 4 App on Heroku with Postgresql</h1>
+<pre>
+$ rails new <APPNAME> -d postgresql
+
+# /config/database.yml replace username and delete production
+
+$ cd <APPNAME>
+
+# .ruby-gemset
+# (if you have a rails-4.0 gemset set up via RVM)
+-----------
+rails-4.0
+-----------
+
+# .ruby-version
+# (although, I think RVM may pull from Gemfile)
+-----------
+2.0.0
+-----------
+
+$ rake db:create:all
+
+$ rails g scaffold article name content:text
+
+$ rake db:migrate
+
+# Procfile
+-----------
+web: bundle exec puma -e $RAILS_ENV -p $PORT -C config/puma.rb
+-----------
+
+# Gemfile
+-----------
+ruby '2.0.0'
+gem 'rails_12factor', group: :production
+gem 'puma'
+-----------
+
+
+# /config/puma.rb
+-----------
+threads 1, 6
+workers 2
+-----------
+
+$ bundle install
+
+$ git init
+$ git status
+$ git add .
+$ git commit -m "Initial commit for rails app setup"
+
+$ heroku apps:create <APPNAME>
+
+$ git push heroku master
+
+$ heroku run rake db:migrate
+
+$ heroku open
+
+</pre>
